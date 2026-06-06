@@ -32,6 +32,9 @@ function formatDate(date, opts) {
    ═══════════════════════════════════════ */
 
 function showToast(message, type = 'default', duration = 4000) {
+  // Bildirimi log'a kaydet
+  logNotification(message, type);
+
   let container = document.getElementById('toast-container');
   if (!container) {
     container = document.createElement('div');
@@ -59,10 +62,40 @@ function showToast(message, type = 'default', duration = 4000) {
   toast.querySelector('.toast-close').addEventListener('click', () => removeToast(toast));
   container.appendChild(toast);
   setTimeout(() => removeToast(toast), duration);
+
+  // Bugün widget'ındaki son bildirimi güncelle
+  if (typeof renderTodayWidget === 'function') {
+    try { renderTodayWidget(); } catch {}
+  }
 }
 
 function removeToast(toast) {
   if (toast.classList.contains('removing')) return;
   toast.classList.add('removing');
   setTimeout(() => toast.remove(), 220);
+}
+
+/* ═══════════════════════════════════════
+   Bildirim Logları
+   ═══════════════════════════════════════ */
+function logNotification(message, type) {
+  try {
+    const logs = JSON.parse(localStorage.getItem('notif-logs') || '[]');
+    logs.unshift({
+      message,
+      type: type || 'default',
+      time: Date.now(),
+    });
+    // Son 100 log'u tut
+    localStorage.setItem('notif-logs', JSON.stringify(logs.slice(0, 100)));
+  } catch {}
+}
+
+function getNotificationLogs() {
+  try { return JSON.parse(localStorage.getItem('notif-logs') || '[]'); }
+  catch { return []; }
+}
+
+function clearNotificationLogs() {
+  localStorage.removeItem('notif-logs');
 }

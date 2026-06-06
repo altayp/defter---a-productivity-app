@@ -30,6 +30,9 @@ function openSettings() {
             <button class="settings-tab ${settingsActiveTab === 'pomodoro' ? 'active' : ''}" data-tab="pomodoro">
               <span class="settings-tab-icon">${getIcon('clock', 14)}</span> Pomodoro
             </button>
+            <button class="settings-tab ${settingsActiveTab === 'todo' ? 'active' : ''}" data-tab="todo">
+              <span class="settings-tab-icon">${getIcon('check', 14)}</span> Yapılacaklar
+            </button>
           </div>
 
           <div class="settings-content" id="settings-content"></div>
@@ -69,6 +72,7 @@ function renderSettingsTab(tab) {
 
   if (tab === 'genel')    renderSettingsGenel(content);
   if (tab === 'pomodoro') renderSettingsPomodoro(content);
+  if (tab === 'todo')     renderSettingsTodo(content);
 }
 
 /* ════════════════════════════════
@@ -341,5 +345,132 @@ function renderSettingsPomodoro(container) {
     saveJSON('pomo-day-stats', data);
     updatePomoDisplay();
     showToast('Pomodoro geçmişi sıfırlandı.', 'success');
+  });
+}
+
+/* ════════════════════════════════
+   YAPILACAKLAR AYARLARI
+   ════════════════════════════════ */
+function renderSettingsTodo(container) {
+  const s = todoSettings();
+  const sounds = ['bell', 'chime', 'soft', 'urgent', 'none'];
+  const soundLabels = { bell:'Zil', chime:'Çan', soft:'Yumuşak', urgent:'Acil', none:'Sessiz' };
+
+  container.innerHTML = `
+    <div class="settings-section-title">
+      ${getIcon('bell', 15)} Hatırlatıcılar
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label">
+        Bildirim Banner'ı
+        <span class="settings-label-sub">Hatırlatıcı zamanı gelince ekranda göster</span>
+      </label>
+      <label class="settings-toggle">
+        <input type="checkbox" id="st-banner" ${s.bannerEnabled !== false ? 'checked' : ''}/>
+        <span class="settings-toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label">
+        Bildirim Sesi
+        <span class="settings-label-sub">Hatırlatıcı zamanı gelince ses çal</span>
+      </label>
+      <label class="settings-toggle">
+        <input type="checkbox" id="st-sound" ${s.soundEnabled !== false ? 'checked' : ''}/>
+        <span class="settings-toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label">
+        Ses Tipi
+      </label>
+      <div class="settings-btn-row">
+        <select class="settings-select" id="st-sound-type">
+          ${sounds.map(v => `<option value="${v}"${v === s.soundType ? ' selected' : ''}>${soundLabels[v]}</option>`).join('')}
+        </select>
+        <button class="settings-btn" id="st-sound-test">${getIcon('play', 13)} Test</button>
+      </div>
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label">
+        Bildirim Süresi
+        <span class="settings-label-sub">Banner ekranda kaç saniye kalsın</span>
+      </label>
+      <div class="settings-spin">
+        <button class="settings-spin-btn" id="st-dur-minus">−</button>
+        <span id="st-dur-val">${s.duration || 8}</span>
+        <span class="settings-spin-unit">sn</span>
+        <button class="settings-spin-btn" id="st-dur-plus">+</button>
+      </div>
+    </div>
+
+    <div class="settings-section-title" style="margin-top:16px">
+      ${getIcon('trash', 15)} Veri
+    </div>
+
+    <div class="settings-row">
+      <label class="settings-label">
+        Tamamlanan Görevleri Temizle
+        <span class="settings-label-sub">Tek seferlikler silinir, tekrarlananlar gizlenir</span>
+      </label>
+      <button class="settings-btn danger" id="st-clear-done">
+        ${getIcon('trash', 13)} Temizle
+      </button>
+    </div>
+  `;
+
+  container.querySelector('#st-banner').addEventListener('change', function() {
+    const cfg = todoSettings(); cfg.bannerEnabled = this.checked; saveTodoSettings(cfg);
+  });
+
+  container.querySelector('#st-sound').addEventListener('change', function() {
+    const cfg = todoSettings(); cfg.soundEnabled = this.checked; saveTodoSettings(cfg);
+  });
+
+  const soundSel = container.querySelector('#st-sound-type');
+  soundSel.addEventListener('change', () => {
+    const cfg = todoSettings(); cfg.soundType = soundSel.value; saveTodoSettings(cfg);
+  });
+
+  container.querySelector('#st-sound-test').addEventListener('click', () => {
+    playTodoSound(soundSel.value);
+  });
+
+  container.querySelector('#st-dur-minus').addEventListener('click', () => {
+    const cfg = todoSettings();
+    cfg.duration = Math.max(3, (cfg.duration || 8) - 1);
+    saveTodoSettings(cfg);
+    container.querySelector('#st-dur-val').textContent = cfg.duration;
+  });
+  container.querySelector('#st-dur-plus').addEventListener('click', () => {
+    const cfg = todoSettings();
+    cfg.duration = Math.min(30, (cfg.duration || 8) + 1);
+    saveTodoSettings(cfg);
+    container.querySelector('#st-dur-val').textContent = cfg.duration;
+  });
+
+  container.querySelector('#st-clear-done').addEventListener('click', async () => {
+    const todos = loadTodos();
+    if (!todos.some(t => t.done)) { showToast('Tamamlanan görev yok.'); return; }
+    const ok = await showDialog({
+      icon: getIcon('trash', 28),
+      title: 'Tamamlananları Temizle',
+      message: 'Tek seferlik görevler silinir, tekrarlanan görevler bir sonraki döneme kadar gizlenir.',
+      confirmText: 'Temizle', cancelText: 'Vazgeç',
+    });
+    if (!ok) return;
+    const updated = todos.map(t => {
+      if (!t.done) return t;
+      if (t.recurrence === 'once') return null;
+      return { ...t, hidden: true };
+    }).filter(Boolean);
+    saveTodos(updated);
+    if (typeof renderTodoList === 'function') renderTodoList();
+    if (typeof renderTodoWidget === 'function') renderTodoWidget();
+    showToast('Temizlendi.', 'success');
   });
 }

@@ -47,24 +47,98 @@ function applyTodoResets() {
 
 applyTodoResets();
 
+/* ── Todo ayarları ── */
+const TODO_DEFAULTS = {
+  soundEnabled: true,
+  soundType:    'bell',
+  bannerEnabled: true,
+  duration:     8,
+};
+function todoSettings() {
+  return loadJSON('todo-settings', { ...TODO_DEFAULTS });
+}
+function saveTodoSettings(s) {
+  saveJSON('todo-settings', s);
+}
+
+/* ── Hatırlatıcı sesi ── */
+function playTodoSound(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const sounds = {
+      bell: () => {
+        [880, 1100, 880].forEach((f, i) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.type = 'sine'; o.frequency.value = f;
+          const t = ctx.currentTime + i * 0.25;
+          g.gain.setValueAtTime(0.4, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+          o.start(t); o.stop(t + 0.45);
+        });
+      },
+      chime: () => {
+        [523, 659, 784, 1047].forEach((f, i) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.type = 'sine'; o.frequency.value = f;
+          const t = ctx.currentTime + i * 0.18;
+          g.gain.setValueAtTime(0.3, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+          o.start(t); o.stop(t + 0.65);
+        });
+      },
+      soft: () => {
+        const o = ctx.createOscillator(), g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.type = 'sine'; o.frequency.value = 528;
+        g.gain.setValueAtTime(0, ctx.currentTime);
+        g.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.3);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2);
+        o.start(); o.stop(ctx.currentTime + 2);
+      },
+      urgent: () => {
+        [1200, 900, 1200, 900].forEach((f, i) => {
+          const o = ctx.createOscillator(), g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.type = 'square'; o.frequency.value = f;
+          const t = ctx.currentTime + i * 0.15;
+          g.gain.setValueAtTime(0.15, t);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+          o.start(t); o.stop(t + 0.14);
+        });
+      },
+      none: () => {},
+    };
+    (sounds[type || todoSettings().soundType] || sounds.bell)();
+  } catch (e) {}
+}
+window.playTodoSound = playTodoSound;
+window.todoSettings  = todoSettings;
+window.saveTodoSettings = saveTodoSettings;
+
 /* ── Hatırlatıcı kontrol ── */
 function checkTodoReminders() {
   const todos   = loadTodos();
   const now     = Date.now();
+  const cfg     = todoSettings();
   let changed   = false;
   todos.forEach(t => {
     if (!t.reminder || t.done || t.reminderFired) return;
     if (now >= new Date(t.reminder).getTime()) {
       t.reminderFired = true;
       changed = true;
-      showToast(`Hatırlatıcı: ${t.text}`, 'default', 8000);
+      if (cfg.bannerEnabled !== false) showToast(`Hatırlatıcı: ${t.text}`, 'default', (cfg.duration || 8) * 1000);
+      if (cfg.soundEnabled !== false)  playTodoSound(cfg.soundType);
     }
   });
   if (changed) saveTodos(todos);
 }
-// Sayfa açılışında hemen + her dakika
-checkTodoReminders();
-setInterval(checkTodoReminders, 60000);
+// İlk kontrol DOM hazır olunca, sonra her 15 saniyede
+document.addEventListener('DOMContentLoaded', () => {
+  checkTodoReminders();
+  setInterval(checkTodoReminders, 15000);
+});
 
 /* ── Etiketler ── */
 const RECURRENCE_LABEL = { daily:'Günlük', weekly:'Haftalık', monthly:'Aylık', once:'Tek Seferlik' };
@@ -296,10 +370,7 @@ function renderTodoList() {
         </div>
       </div>
       <div class="todo-item-actions">
-        <button class="todo-item-action-btn reminder" data-id="${t.id}" title="${t.reminder ? 'Hatırlatıcıyı düzenle' : 'Hatırlatıcı ekle'}">
-          ${getIcon('bell', 12)}
-        </button>
-        <button class="todo-item-action-btn edit" data-id="${t.id}" title="Düzenle">
+<button class="todo-item-action-btn edit" data-id="${t.id}" title="Düzenle">
           ${getIcon('edit', 12)}
         </button>
         <button class="todo-item-action-btn del" data-id="${t.id}" title="Sil">
@@ -327,13 +398,6 @@ function renderTodoList() {
       todoFormMode = 'edit';
       todoEditId   = btn.dataset.id;
       openTodoForm(btn.dataset.id);
-    });
-  });
-
-  listEl.querySelectorAll('.todo-item-action-btn.reminder').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      showTodoReminderPicker(btn.dataset.id);
     });
   });
 
@@ -375,25 +439,33 @@ function openTodoForm(editId) {
         <span class="todo-form-label">${getIcon('check', 13)} Görev</span>
         <input class="todo-add-input" id="tf-text"
           placeholder="Görev adını gir…" maxlength="200"
-          value="${escapeHtml(defText)}" style="flex:1"/>
+          value="${escapeHtml(defText)}"/>
       </div>
 
       <div class="todo-form-row">
         <span class="todo-form-label">${getIcon('repeat', 13)} Tür</span>
-        <select class="todo-form-select" id="tf-recurrence">
-          <option value="once"    ${defRecurrence==='once'    ?'selected':''}>Tek Seferlik</option>
-          <option value="daily"   ${defRecurrence==='daily'   ?'selected':''}>Günlük</option>
-          <option value="weekly"  ${defRecurrence==='weekly'  ?'selected':''}>Haftalık</option>
-          <option value="monthly" ${defRecurrence==='monthly' ?'selected':''}>Aylık</option>
-        </select>
+        <div class="todo-seg" id="tf-recurrence">
+          <button type="button" class="todo-seg-btn${defRecurrence==='once'    ?' active':''}" data-val="once">Tek Seferlik</button>
+          <button type="button" class="todo-seg-btn${defRecurrence==='daily'   ?' active':''}" data-val="daily">Günlük</button>
+          <button type="button" class="todo-seg-btn${defRecurrence==='weekly'  ?' active':''}" data-val="weekly">Haftalık</button>
+          <button type="button" class="todo-seg-btn${defRecurrence==='monthly' ?' active':''}" data-val="monthly">Aylık</button>
+        </div>
       </div>
 
       <div class="todo-form-row">
         <span class="todo-form-label">${getIcon('flag', 13)} Öncelik</span>
-        <select class="todo-form-select" id="tf-priority">
-          <option value="normal" ${defPriority==='normal'?'selected':''}>Normal</option>
-          <option value="high"   ${defPriority==='high'  ?'selected':''}>Yüksek</option>
-        </select>
+        <div class="todo-seg" id="tf-priority">
+          <button type="button" class="todo-seg-btn${defPriority==='normal'?' active':''}" data-val="normal">Normal</button>
+          <button type="button" class="todo-seg-btn${defPriority==='high'  ?' active':''}" data-val="high">Yüksek</button>
+        </div>
+      </div>
+
+      <div class="todo-form-row">
+        <span class="todo-form-label">${getIcon('bell', 13)} Hatırlatıcı</span>
+        <button type="button" class="todo-form-dp-btn" id="tf-reminder-btn">
+          ${getIcon('calendar', 13)}
+          <span id="tf-reminder-label">${defReminder ? formatReminderShort(defReminder) : 'Tarih & saat seç…'}</span>
+        </button>
       </div>
 
 
@@ -407,6 +479,28 @@ function openTodoForm(editId) {
     </div>
   `;
 
+  // Hatırlatıcı state
+  let reminderValue = defReminder || null;
+
+  // Hatırlatıcı butonu — datepicker aç
+  wrap.querySelector('#tf-reminder-btn').addEventListener('click', () => {
+    showDatePicker({
+      title:       'Hatırlatıcı Tarihi',
+      withTime:    true,
+      defaultDate: reminderValue ? new Date(reminderValue) : null,
+      minDate:     new Date(),
+      optional:    true,
+    }).then(result => {
+      if (result === undefined || result === null) {
+        reminderValue = null;
+      } else {
+        reminderValue = result.toISOString();
+      }
+      const lbl = wrap.querySelector('#tf-reminder-label');
+      if (lbl) lbl.textContent = reminderValue ? formatReminderShort(reminderValue) : 'Tarih & saat seç…';
+    });
+  });
+
   // Basit event binding
   wrap.querySelector('#tf-cancel').addEventListener('click', closeTodoForm);
 
@@ -415,19 +509,33 @@ function openTodoForm(editId) {
     if (e.key === 'Escape') closeTodoForm();
   });
 
+  // Segmented butonlar — tür ve öncelik
+  wrap.querySelectorAll('.todo-seg').forEach(seg => {
+    seg.addEventListener('click', e => {
+      const btn = e.target.closest('.todo-seg-btn');
+      if (!btn) return;
+      seg.querySelectorAll('.todo-seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
   wrap.querySelector('#tf-submit').addEventListener('click', () => {
     const text = wrap.querySelector('#tf-text').value.trim();
     if (!text) { wrap.querySelector('#tf-text').focus(); return; }
-    const recurrence = wrap.querySelector('#tf-recurrence').value;
-    const priority   = wrap.querySelector('#tf-priority').value;
+    const recurrence = wrap.querySelector('#tf-recurrence .todo-seg-btn.active')?.dataset.val || 'once';
+    const priority   = wrap.querySelector('#tf-priority .todo-seg-btn.active')?.dataset.val   || 'normal';
     const todos = loadTodos();
     if (isEdit) {
       const t = todos.find(x => x.id === editId);
-      if (t) { t.text = text; t.recurrence = recurrence; t.priority = priority; }
+      if (t) {
+        t.text = text; t.recurrence = recurrence; t.priority = priority;
+        t.reminder = reminderValue; t.reminderFired = false;
+      }
     } else {
       todos.unshift({
         id: newTodoId(), text, recurrence, priority,
-        done: false, hidden: false, reminder: null, reminderFired: false,
+        done: false, hidden: false,
+        reminder: reminderValue, reminderFired: false,
         createdAt: Date.now(),
       });
     }

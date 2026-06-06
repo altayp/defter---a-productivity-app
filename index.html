@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="css/modules/settings.css"/>
   <link rel="stylesheet" href="css/modules/todo.css"/>
   <link rel="stylesheet" href="css/modules/datepicker.css"/>
+  <link rel="stylesheet" href="css/modules/projects.css"/>
+  <link rel="stylesheet" href="css/modules/calendar.css"/>
+  <link rel="stylesheet" href="css/modules/today.css"/>
 </head>
 <body>
 
@@ -48,6 +51,16 @@
 
     <!-- Sol Sütun -->
     <aside class="column" id="col-left">
+
+      <div class="widget" id="widget-today" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="today" data-icon-size="15"></span>
+          <span class="widget-title">Bugün</span>
+          <button class="widget-expand" id="today-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="today-widget-body"></div>
+      </div>
 
       <div class="widget" id="widget-todo" data-col="left">
         <div class="widget-header">
@@ -87,7 +100,25 @@
     <!-- Sağ Sütun -->
     <aside class="column" id="col-right">
 
-      
+      <div class="widget" id="widget-calendar" data-col="right">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="calendar" data-icon-size="15"></span>
+          <span class="widget-title">Takvim</span>
+          <button class="widget-expand" id="calendar-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="calendar-widget-body"></div>
+      </div>
+
+      <div class="widget" id="widget-projects" data-col="right">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="folder" data-icon-size="15"></span>
+          <span class="widget-title">Projeler</span>
+          <button class="widget-expand" id="projects-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="projects-widget-body"></div>
+      </div>
 
     </aside>
 
@@ -100,6 +131,9 @@
 <script src="js/datepicker.js"></script>
 <script src="js/modules/pomodoro.js"></script>
 <script src="js/modules/todo.js"></script>
+<script src="js/modules/projects.js"></script>
+<script src="js/modules/calendar.js"></script>
+<script src="js/modules/today.js"></script>
 <script src="js/modules/settings.js"></script>
 <script src="js/modules/test.js"></script>
 <script src="js/dashboard.js"></script>

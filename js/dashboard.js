@@ -242,10 +242,28 @@ function onDragEnd() {
 
 function rebindWidgetHandlers(widget) {
   const id = widget.id;
+  if (id === 'widget-today') {
+    widget.onclick = openTodayModule;
+    widget.querySelector('#today-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openTodayModule();
+    });
+  }
   if (id === 'widget-todo') {
     widget.onclick = openTodoModule;
     widget.querySelector('#todo-expand-btn')?.addEventListener('click', e => {
       e.stopPropagation(); openTodoModule();
+    });
+  }
+  if (id === 'widget-projects') {
+    widget.onclick = openProjectsModule;
+    widget.querySelector('#projects-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openProjectsModule();
+    });
+  }
+  if (id === 'widget-calendar') {
+    widget.onclick = openCalendarModule;
+    widget.querySelector('#calendar-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openCalendarModule();
     });
   }
   if (id === 'widget-pomodoro') {
@@ -310,10 +328,25 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Sürüklemeyi başlat */
   initWidgetDrag();
 
+  /* Bugün widget */
+  renderTodayWidget();
+  document.getElementById('today-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openTodayModule(); });
+  document.getElementById('widget-today')?.addEventListener('click', openTodayModule);
+
   /* Todo widget */
   renderTodoWidget();
   document.getElementById('todo-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openTodoModule(); });
   document.getElementById('widget-todo')?.addEventListener('click', openTodoModule);
+
+  /* Projeler widget */
+  renderProjectsWidget();
+  document.getElementById('projects-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openProjectsModule(); });
+  document.getElementById('widget-projects')?.addEventListener('click', openProjectsModule);
+
+  /* Takvim widget */
+  renderCalendarWidget();
+  document.getElementById('calendar-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openCalendarModule(); });
+  document.getElementById('widget-calendar')?.addEventListener('click', openCalendarModule);
 
   /* Pomodoro widget */
   renderPomoWidget();

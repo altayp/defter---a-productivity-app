@@ -290,7 +290,7 @@
   cursor: default;
 }
 .todo-item:hover { border-color: var(--border-strong); }
-.todo-item.high  { border-left: 3px solid var(--border-strong); }
+.todo-item.high  { border-left: 3px solid var(--accent); }
 .todo-item.done  { opacity: 0.5; }
 .todo-item.done .todo-item-text { text-decoration: line-through; }
 
@@ -462,4 +462,46 @@
 #todo-open-form-btn.active {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+}
+
+/* ── Form: input ve datepicker genişliği ── */
+.todo-form .todo-add-input {
+  flex: 0 1 320px;
+  max-width: 320px;
+}
+
+.todo-form-dp-btn {
+  flex: 0 1 220px;
+  max-width: 220px;
+  justify-content: flex-start;
+}
+
+/* ── Segmented butonlar ── */
+.todo-seg {
+  display: inline-flex;
+  gap: 0;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  overflow: hidden;
+  background: var(--bg-card);
+}
+
+.todo-seg-btn {
+  padding: 6px 14px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink-light);
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+.todo-seg-btn:last-child { border-right: none; }
+.todo-seg-btn:hover { background: var(--bg-hover); color: var(--ink); }
+.todo-seg-btn.active {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
 }
