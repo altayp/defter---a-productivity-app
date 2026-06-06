@@ -1,0 +1,420 @@
+/* ═══════════════════════════════════════
+   test.css — Test Modülü (organik stil)
+   ═══════════════════════════════════════ */
+
+#module-test {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 28px;
+  overflow-y: auto;
+  animation: moduleIn 0.22s ease both;
+}
+
+@keyframes moduleIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px dashed var(--border);
+}
+
+.module-header-icon { color: var(--accent); display: flex; align-items: center; }
+
+.module-header-title {
+  font-family: 'Caveat', cursive;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+
+.module-back {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  color: var(--ink-faint);
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.module-back:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Bölümler ── */
+.test-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.test-section {
+  background: var(--bg-card);
+  border: 1.8px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 16px 18px;
+  box-shadow: 2px 3px 0 var(--shadow);
+}
+
+.test-section-title {
+  font-family: 'Caveat', cursive;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.test-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 7px 0;
+}
+.test-row + .test-row { border-top: 1px dashed var(--border); }
+
+.test-label {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  color: var(--ink-light);
+  min-width: 130px;
+  flex-shrink: 0;
+  font-style: italic;
+}
+
+/* ── Butonlar — organik stil ── */
+.test-btn {
+  padding: 7px 18px;
+  border-radius: var(--radius-pill);
+  font-family: 'Caveat', cursive;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1.8px solid var(--border-strong);
+  background: var(--bg-card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 1px 2px 0 var(--shadow);
+}
+.test-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 2px 4px 0 var(--shadow);
+}
+.test-btn:active { transform: scale(0.97); }
+
+.test-btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.test-btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.test-btn.danger {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+.test-btn.danger:hover { background: rgba(192,57,43,0.08); }
+
+.test-btn.small {
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+/* ── Input ── */
+.test-input {
+  padding: 7px 12px;
+  border-radius: var(--radius-soft);
+  border: 1.5px solid var(--border);
+  background: var(--bg-input);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 200px;
+}
+.test-input:focus { border-color: var(--accent); }
+.test-input::placeholder { color: var(--ink-faint); font-style: italic; }
+
+/* ── Checkbox ── */
+.test-checkbox {
+  width: 16px; height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ── Toggle ── */
+.test-toggle {
+  position: relative;
+  width: 42px; height: 24px;
+  flex-shrink: 0;
+}
+.test-toggle input { opacity: 0; width: 0; height: 0; }
+.test-toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border-strong);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border: 1.5px solid var(--border-strong);
+}
+.test-toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 16px; height: 16px;
+  left: 3px; top: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.test-toggle input:checked + .test-toggle-slider { background: var(--accent); border-color: var(--accent); }
+.test-toggle input:checked + .test-toggle-slider::before { transform: translateX(18px); }
+
+/* ── Progress ── */
+.test-progress {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  overflow: hidden;
+  width: 200px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-strong);
+}
+.test-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: var(--radius-pill);
+  transition: width 0.4s ease;
+}
+
+/* ── Badge ── */
+.test-badge {
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  font-family: 'Caveat', cursive;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+}
+.test-badge.neutral { background: var(--bg-hover); color: var(--ink-light); border-color: var(--border-strong); }
+.test-badge.success { background: rgba(90,158,100,0.12); color: #5a9e64; border-color: #5a9e64; }
+.test-badge.error   { background: rgba(192,57,43,0.1);  color: #c0392b; border-color: #c0392b; }
+
+/* ── Sonuç alanı ── */
+.test-result {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink-faint);
+  font-style: italic;
+  padding: 3px 10px;
+  background: var(--bg-hover);
+  border-radius: var(--radius-soft);
+  border: 1px solid var(--border);
+  min-width: 80px;
+  text-align: center;
+}
+
+/* ── Dialog overlay ── */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: overlayIn 0.15s ease;
+}
+@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+.dialog-box {
+  background: var(--bg-card);
+  border: 1.8px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  padding: 26px 30px;
+  min-width: 320px;
+  max-width: 440px;
+  width: 90%;
+  animation: dialogIn 0.18s ease;
+  box-shadow: 4px 6px 0 var(--shadow), 8px 12px 0 rgba(0,0,0,0.06);
+}
+@keyframes dialogIn {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dialog-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.dialog-title {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.dialog-message {
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-light);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.dialog-input {
+  width: 100%;
+  padding: 9px 13px;
+  border-radius: var(--radius-soft);
+  border: 1.5px solid var(--border);
+  background: var(--bg-input);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 18px;
+  transition: border-color 0.15s;
+}
+.dialog-input:focus { border-color: var(--accent); }
+.dialog-input::placeholder { color: var(--ink-faint); font-style: italic; }
+
+.dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ── Toast / Bildirim Banner ── */
+.toast-container {
+  position: fixed;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 20px var(--shadow);
+  min-width: 300px;
+  max-width: 480px;
+  pointer-events: auto;
+  animation: toastIn 0.35s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+.toast.error   { border-color: #c0392b; }
+.toast.success { border-color: #5a9e64; }
+
+.toast-icon {
+  flex-shrink: 0;
+  color: var(--accent);
+  animation: toastRing 0.6s ease 0.4s 2;
+}
+.toast.error   .toast-icon { color: #c0392b; }
+.toast.success .toast-icon { color: #5a9e64; }
+
+@keyframes toastRing {
+  0%,100% { transform: rotate(0deg); }
+  20%     { transform: rotate(-18deg); }
+  40%     { transform: rotate(18deg); }
+  60%     { transform: rotate(-12deg); }
+  80%     { transform: rotate(12deg); }
+}
+
+.toast-body { flex: 1; min-width: 0; }
+
+.toast-label {
+  font-family: 'Caveat', cursive;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+.toast.error   .toast-label { color: #c0392b; }
+.toast.success .toast-label { color: #5a9e64; }
+
+.toast-message {
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast-time {
+  font-family: 'Crimson Pro', serif;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin-top: 1px;
+}
+
+.toast-close {
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.12s;
+}
+.toast-close:hover { border-color: #c07070; color: #c07070; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-12px) scale(0.96); }
+}
+.toast.removing { animation: toastOut 0.22s ease forwards; }

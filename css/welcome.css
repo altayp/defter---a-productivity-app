@@ -1,0 +1,124 @@
+/* ═══════════════════════════════════════
+   welcome.css — Karşılama Ekranı
+   ═══════════════════════════════════════ */
+
+#welcome {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 40px;
+  animation: welcomeIn 0.4s ease both;
+}
+
+@keyframes welcomeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.welcome-icon {
+  line-height: 1;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+}
+
+.welcome-greeting {
+  font-family: 'Caveat', cursive;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1.1;
+}
+
+.welcome-time {
+  font-family: 'Caveat', cursive;
+  font-size: 28px;
+  color: var(--ink-light);
+  text-align: center;
+}
+
+.welcome-subtext {
+  font-family: 'Crimson Pro', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ink-light);
+  text-align: center;
+  max-width: 420px;
+}
+
+.welcome-stats {
+  display: flex;
+  gap: 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 28px;
+}
+
+.welcome-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcome-stat-num {
+  font-family: 'Caveat', cursive;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.welcome-stat-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.welcome-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.welcome-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  font-weight: 600;
+  border: 1.5px solid var(--border-strong);
+  color: var(--ink-light);
+  background: var(--bg-card);
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.welcome-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
+.welcome-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.welcome-btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.welcome-quote {
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+.welcome-quote-author {
+  font-size: 13px;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: 4px;
+}

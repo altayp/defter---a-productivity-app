@@ -1,0 +1,12 @@
+{
+  "name": "defter",
+  "version": "3.0.0",
+  "description": "A productivity app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^28.3.3"
+  }
+}

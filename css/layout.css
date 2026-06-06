@@ -1,0 +1,269 @@
+/* ═══════════════════════════════════════
+   layout.css — Üç Sütun Layout
+   ═══════════════════════════════════════ */
+
+/* ── Elle çizilmiş border-radius ── */
+:root {
+  --radius-organic: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --radius-soft:    8px 3px 10px 4px / 4px 10px 3px 8px;
+  --radius-pill:    120px 8px 100px 10px / 10px 100px 8px 120px;
+  --radius-card:    12px 4px 14px 4px / 4px 14px 4px 12px;
+}
+
+/* ── Uygulama Kabı ── */
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Üst Bar ── */
+#titlebar {
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--bg-card);
+  -webkit-app-region: drag;
+  user-select: none;
+  gap: 0;
+}
+
+#titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 220px;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+}
+
+#app-name {
+  font-family: 'Caveat', cursive;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+#titlebar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  -webkit-app-region: drag;
+}
+
+.color-dot {
+  -webkit-app-region: no-drag;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  padding: 0;
+  transition: transform 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.color-dot:hover { transform: scale(1.25); }
+.color-dot.active { border-color: var(--ink); transform: scale(1.15); }
+.color-dot[data-color="green"]  { background: #5a9e6f; }
+.color-dot[data-color="blue"]   { background: #4a90c4; }
+.color-dot[data-color="red"]    { background: #c45a5a; }
+.color-dot[data-color="purple"] { background: #9a70c4; }
+.color-dot[data-color="gold"]   { background: #c8902a; }
+
+#titlebar-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 220px;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+}
+
+/* Titlebar butonları — organik stil */
+.titlebar-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-soft);
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 12px;
+}
+.titlebar-btn:hover { background: var(--bg-hover); color: var(--ink); border-color: var(--border-strong); }
+.titlebar-btn.danger:hover { background: #c0504a; color: #fff; border-color: #c0504a; }
+
+.titlebar-sep {
+  color: var(--border-strong);
+  font-size: 14px;
+  padding: 0 2px;
+  user-select: none;
+  -webkit-app-region: no-drag;
+}
+
+/* ── Ana İçerik ── */
+#main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+/* ── Sütunlar ── */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#col-left {
+  width: 240px;
+  flex-shrink: 0;
+  border-right: 1.5px solid var(--border);
+}
+
+#col-center {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#col-right {
+  width: 240px;
+  flex-shrink: 0;
+  border-left: 1.5px solid var(--border);
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 2px; }
+
+/* ── Widget Kartları — Organik stil ── */
+.widget {
+  background: var(--bg-card);
+  border: 1.8px solid var(--border);
+  border-radius: var(--radius-organic);
+  padding: 12px 14px;
+  box-shadow: 2px 3px 0 var(--shadow), 4px 6px 0 rgba(0,0,0,0.04);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.widget:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 4px 6px 0 var(--shadow), 6px 10px 0 rgba(0,0,0,0.06);
+  border-color: var(--accent);
+}
+
+.widget-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.widget-title {
+  font-family: 'Caveat', cursive;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+
+.widget-icon {
+  color: var(--ink-faint);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.widget-expand {
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: var(--radius-soft);
+  transition: color 0.15s;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+.widget:hover .widget-expand { color: var(--accent); }
+
+.widget-body:empty { display: none; }
+.widget-body { font-size: 13px; color: var(--ink-light); }
+
+/* ── Widget Sürükleme Handle ── */
+.widget-drag-handle {
+  display: none;
+  align-items: center;
+  color: var(--ink-faint);
+  cursor: grab;
+  padding: 2px 3px;
+  border-radius: 4px;
+  transition: color 0.12s;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+.widget-drag-handle:hover { color: var(--accent); }
+.widget-drag-handle:active { cursor: grabbing; }
+
+/* Kilit açıkken handle'ları göster */
+body.layout-unlocked .widget-drag-handle { display: flex; }
+
+/* Sürüklenen widget soluklaşır */
+.widget-dragging {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* Ghost — fare ile hareket eden kopya */
+.widget-drag-ghost {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.85;
+  box-shadow: 6px 10px 0 var(--shadow), 12px 20px 0 rgba(0,0,0,0.08);
+  transform: rotate(1.5deg);
+  border-radius: var(--radius-organic);
+  transition: transform 0.1s;
+}
+
+/* Hedef sütun vurgusu */
+.col-drop-target {
+  background: var(--accent-subtle);
+  border-color: var(--accent) !important;
+  transition: background 0.15s;
+}
+
+/* Kilit butonu aktifken */
+#layout-lock-btn.active {
+  color: var(--accent);
+  background: var(--accent-subtle);
+  border-color: var(--accent);
+}
+
+/* ── Sürükleme placeholder ── */
+.widget-placeholder {
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius-organic);
+  background: var(--accent-subtle);
+  opacity: 0.6;
+  flex-shrink: 0;
+  transition: height 0.1s;
+}

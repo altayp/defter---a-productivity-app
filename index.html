@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html data-theme="dark" data-color="green">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Defter</title>
+  <link rel="stylesheet" href="css/base.css"/>
+  <link rel="stylesheet" href="css/layout.css"/>
+  <link rel="stylesheet" href="css/welcome.css"/>
+  <link rel="stylesheet" href="css/modules/test.css"/>
+  <link rel="stylesheet" href="css/modules/pomodoro.css"/>
+  <link rel="stylesheet" href="css/modules/settings.css"/>
+  <link rel="stylesheet" href="css/modules/todo.css"/>
+  <link rel="stylesheet" href="css/modules/datepicker.css"/>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Üst Bar -->
+  <header id="titlebar">
+    <div id="titlebar-left">
+      <span id="app-logo" data-icon="logo" data-icon-size="18"></span>
+      <span id="app-name">Defter</span>
+    </div>
+
+    <div id="titlebar-center">
+      <button class="color-dot" data-color="green"  title="Yeşil"></button>
+      <button class="color-dot" data-color="blue"   title="Mavi"></button>
+      <button class="color-dot" data-color="red"    title="Kırmızı"></button>
+      <button class="color-dot" data-color="purple" title="Mor"></button>
+      <button class="color-dot" data-color="gold"   title="Altın"></button>
+    </div>
+
+    <div id="titlebar-right">
+      <button class="titlebar-btn" id="layout-lock-btn" title="Düzeni Kilitle / Aç"></button>
+      <button class="titlebar-btn" id="theme-toggle" title="Tema Değiştir"></button>
+      <button class="titlebar-btn" id="settings-btn" title="Ayarlar" data-icon="settings" data-icon-size="15"></button>
+      <span class="titlebar-sep">|</span>
+      <button class="titlebar-btn" id="btn-min"   title="Küçült">&#x2500;</button>
+      <button class="titlebar-btn" id="btn-max"   title="Büyüt">&#x25A1;</button>
+      <button class="titlebar-btn danger" id="btn-close" title="Kapat">&#x2715;</button>
+    </div>
+  </header>
+
+  <!-- Ana İçerik -->
+  <div id="main">
+
+    <!-- Sol Sütun -->
+    <aside class="column" id="col-left">
+
+      <div class="widget" id="widget-todo" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="check" data-icon-size="15"></span>
+          <span class="widget-title">Yapılacaklar</span>
+          <button class="widget-expand" id="todo-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="todo-widget-body"></div>
+      </div>
+
+      <div class="widget" id="widget-pomodoro" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="clock" data-icon-size="15"></span>
+          <span class="widget-title">Pomodoro</span>
+          <button class="widget-expand" id="pomo-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="pomo-widget-body"></div>
+      </div>
+
+      <div class="widget" id="widget-test" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="settings" data-icon-size="15"></span>
+          <span class="widget-title">Test</span>
+          <button class="widget-expand" id="test-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="test-widget-body"></div>
+      </div>
+
+    </aside>
+
+    <!-- Orta Panel -->
+    <main id="col-center"></main>
+
+    <!-- Sağ Sütun -->
+    <aside class="column" id="col-right">
+
+      
+
+    </aside>
+
+  </div>
+
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/datepicker.js"></script>
+<script src="js/modules/pomodoro.js"></script>
+<script src="js/modules/todo.js"></script>
+<script src="js/modules/settings.js"></script>
+<script src="js/modules/test.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+/* ═══════════════════════════════════════
+   base.css — Değişkenler, Reset, Tema
+   ═══════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+/* ── Koyu Tema (varsayılan) ── */
+:root,
+[data-theme="dark"] {
+  --bg:            #1c1e22;
+  --bg-card:       rgba(30,33,38,0.97);
+  --bg-input:      rgba(36,40,46,0.92);
+  --bg-hover:      #25282e;
+
+  --border:        #2e3340;
+  --border-strong: #3a3f50;
+
+  --ink:           #d8dde6;
+  --ink-light:     #8a92a0;
+  --ink-faint:     #4a5060;
+
+  --accent:        #6aaa82;
+  --accent-hover:  #528a68;
+  --accent-subtle: rgba(106,170,130,0.15);
+
+  --shadow:        rgba(0,0,0,0.4);
+  --shadow-light:  rgba(0,0,0,0.2);
+
+  --dot-color:     #22252d;
+  --dot-size:      20px;
+  --scrollbar:     #2e3340;
+}
+
+/* ── Açık Tema ── */
+[data-theme="light"] {
+  --bg:            #f5f0e8;
+  --bg-card:       rgba(255,252,246,0.92);
+  --bg-input:      rgba(255,252,246,0.85);
+  --bg-hover:      #ede7d9;
+
+  --border:        #c8bfae;
+  --border-strong: #b0a898;
+
+  --ink:           #2c2416;
+  --ink-light:     #7a6a52;
+  --ink-faint:     #bfb49a;
+
+  --accent:        #3d6b4f;
+  --accent-hover:  #2e5039;
+  --accent-subtle: rgba(61,107,79,0.13);
+
+  --shadow:        rgba(44,36,22,0.13);
+  --shadow-light:  rgba(44,36,22,0.06);
+
+  --dot-color:     #cfc6b8;
+  --dot-size:      20px;
+  --scrollbar:     #d4cbbf;
+}
+
+/* ── Renk Temaları (koyu) ── */
+[data-theme="dark"][data-color="green"]  { --accent: #6aaa82; --accent-hover: #528a68; --accent-subtle: rgba(106,170,130,0.15); }
+[data-theme="dark"][data-color="blue"]   { --accent: #5aaad4; --accent-hover: #3d88b8; --accent-subtle: rgba(90,170,212,0.15); }
+[data-theme="dark"][data-color="red"]    { --accent: #d46a60; --accent-hover: #b85048; --accent-subtle: rgba(212,106,96,0.15); }
+[data-theme="dark"][data-color="purple"] { --accent: #aa88d8; --accent-hover: #8868c0; --accent-subtle: rgba(170,136,216,0.15); }
+[data-theme="dark"][data-color="gold"]   { --accent: #d4aa48; --accent-hover: #b08830; --accent-subtle: rgba(212,170,72,0.15); }
+
+/* ── Renk Temaları (açık) ── */
+[data-theme="light"][data-color="green"]  { --accent: #3d6b4f; --accent-hover: #2e5039; --accent-subtle: rgba(61,107,79,0.13); }
+[data-theme="light"][data-color="blue"]   { --accent: #2a6496; --accent-hover: #1a4a72; --accent-subtle: rgba(42,100,150,0.13); }
+[data-theme="light"][data-color="red"]    { --accent: #c0392b; --accent-hover: #922b21; --accent-subtle: rgba(192,57,43,0.12); }
+[data-theme="light"][data-color="purple"] { --accent: #7d5fb5; --accent-hover: #5e4492; --accent-subtle: rgba(125,95,181,0.13); }
+[data-theme="light"][data-color="gold"]   { --accent: #b7791f; --accent-hover: #8a5c18; --accent-subtle: rgba(183,121,31,0.13); }
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 14px;
+  background-color: var(--bg);
+  color: var(--ink);
+  background-image: radial-gradient(circle, var(--dot-color) 1px, transparent 1px);
+  background-size: var(--dot-size) var(--dot-size);
+  -webkit-font-smoothing: antialiased;
+}
+
+body, body * {
+  transition:
+    background-color 0.2s ease,
+    border-color     0.2s ease,
+    color            0.2s ease,
+    box-shadow       0.2s ease;
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 2px; }
+* { scrollbar-width: thin; scrollbar-color: var(--scrollbar) transparent; }
+::selection { background: var(--accent-subtle); color: var(--ink); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+input, textarea, select {
+  font-family: inherit;
+  color: inherit;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+/* ═══════════════════════════════════════
+   Toast Bildirimleri — Global
+   ═══════════════════════════════════════ */
+
+.toast-container {
+  position: fixed;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  box-shadow: 2px 4px 0 var(--shadow);
+  min-width: 280px;
+  max-width: 440px;
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+  animation: toastIn 0.3s cubic-bezier(.34,1.4,.64,1) forwards;
+  border: none;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  color: var(--ink-faint);
+  display: flex;
+}
+.toast.success .toast-icon { color: #5a9e64; }
+.toast.error   .toast-icon { color: #c0392b; }
+
+.toast-body { flex: 1; min-width: 0; }
+
+.toast-label {
+  font-family: 'Caveat', cursive;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1px;
+}
+.toast.success .toast-label { color: #5a9e64; }
+.toast.error   .toast-label { color: #c0392b; }
+
+.toast-message {
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toast-time {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin-top: 1px;
+}
+
+.toast-close {
+  width: 22px; height: 22px;
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  cursor: pointer;
+  color: var(--ink-faint);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.12s;
+  align-self: flex-start;
+}
+.toast-close:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ── Süre çubuğu (YouTube tarzı) ── */
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.toast-progress-bar {
+  height: 100%;
+  width: 100%;
+  background: var(--ink-faint);
+  transform-origin: left;
+  animation: toastProgress linear forwards;
+}
+.toast.success .toast-progress-bar { background: #5a9e64; }
+.toast.error   .toast-progress-bar { background: #c0392b; }
+
+@keyframes toastProgress {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-8px) scale(0.96); }
+}
+.toast.removing { animation: toastOut 0.22s ease forwards; }
