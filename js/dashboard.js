@@ -7,6 +7,65 @@ const savedColor = loadJSON('color', 'green');
 document.documentElement.dataset.theme = loadJSON('theme', 'dark');
 document.documentElement.dataset.color = savedColor;
 
+/* ── Özel (custom) renk ── */
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const n = parseInt(hex, 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+function shadeHex(hex, percent) {
+  // percent < 0 koyulaştırır
+  const { r, g, b } = hexToRgb(hex);
+  const adj = c => Math.max(0, Math.min(255, Math.round(c + (c * percent / 100))));
+  return '#' + [adj(r), adj(g), adj(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+function applyCustomColor(hex) {
+  const root = document.documentElement;
+  const { r, g, b } = hexToRgb(hex);
+  root.style.setProperty('--accent', hex);
+  root.style.setProperty('--accent-hover', shadeHex(hex, -22));
+  root.style.setProperty('--accent-subtle', `rgba(${r},${g},${b},0.15)`);
+}
+function clearCustomColor() {
+  const root = document.documentElement;
+  root.style.removeProperty('--accent');
+  root.style.removeProperty('--accent-hover');
+  root.style.removeProperty('--accent-subtle');
+}
+function getCustomColor() { return loadJSON('color-custom', '#e08a4c'); }
+
+// Sayfa açılışında custom seçiliyse uygula
+if (savedColor === 'custom') applyCustomColor(getCustomColor());
+
+/* ── Font büyüklüğü (zoom ölçeği) ── */
+function applyFontScale(scale) {
+  // scale: 0.85 – 1.3 arası; tüm arayüzü orantılı ölçekler
+  if (document.body) document.body.style.zoom = scale;
+}
+
+/* ── Widget görünürlüğü + Developer modu ── */
+const DEV_PASSWORD = 'defter2026';
+
+function isDevMode() { return loadJSON('dev-mode', false) === true; }
+function loadHiddenWidgets() {
+  try { return JSON.parse(localStorage.getItem('hidden-widgets') || '[]'); }
+  catch { return []; }
+}
+function saveHiddenWidgets(arr) { localStorage.setItem('hidden-widgets', JSON.stringify(arr)); }
+
+function applyWidgetVisibility() {
+  const hidden = loadHiddenWidgets();
+  const dev = isDevMode();
+  document.querySelectorAll('.widget').forEach(w => {
+    const isDevWidget = w.dataset.dev === 'true';
+    // Dev widget'ı sadece dev modunda görünebilir
+    if (isDevWidget && !dev) { w.style.display = 'none'; return; }
+    // Kullanıcının gizlediği widget'lar
+    w.style.display = hidden.includes(w.id) ? 'none' : '';
+  });
+}
+
 /* ── Tema Toggle ── */
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
@@ -254,6 +313,18 @@ function rebindWidgetHandlers(widget) {
       e.stopPropagation(); openTodoModule();
     });
   }
+  if (id === 'widget-notes') {
+    widget.onclick = openNotesModule;
+    widget.querySelector('#notes-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openNotesModule();
+    });
+  }
+  if (id === 'widget-habits') {
+    widget.onclick = openHabitsModule;
+    widget.querySelector('#habits-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openHabitsModule();
+    });
+  }
   if (id === 'widget-projects') {
     widget.onclick = openProjectsModule;
     widget.querySelector('#projects-expand-btn')?.addEventListener('click', e => {
@@ -264,6 +335,12 @@ function rebindWidgetHandlers(widget) {
     widget.onclick = openCalendarModule;
     widget.querySelector('#calendar-expand-btn')?.addEventListener('click', e => {
       e.stopPropagation(); openCalendarModule();
+    });
+  }
+  if (id === 'widget-focus') {
+    widget.onclick = openFocusModule;
+    widget.querySelector('#focus-expand-btn')?.addEventListener('click', e => {
+      e.stopPropagation(); openFocusModule();
     });
   }
   if (id === 'widget-pomodoro') {
@@ -284,18 +361,26 @@ function rebindWidgetHandlers(widget) {
 document.addEventListener('DOMContentLoaded', () => {
 
   /* Renk noktaları */
+  const customDot = document.getElementById('color-dot-custom');
+  if (customDot) customDot.style.background = getCustomColor();
+
   document.querySelectorAll('.color-dot').forEach(dot => {
     if (dot.dataset.color === savedColor) dot.classList.add('active');
     dot.addEventListener('click', () => {
       document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
       dot.classList.add('active');
-      document.documentElement.dataset.color = dot.dataset.color;
-      saveJSON('color', dot.dataset.color);
+      const color = dot.dataset.color;
+      document.documentElement.dataset.color = color;
+      saveJSON('color', color);
+      if (color === 'custom') applyCustomColor(getCustomColor());
+      else clearCustomColor();
     });
   });
 
   /* Tema toggle */
   applyTheme(loadJSON('theme', 'dark'));
+  applyFontScale(loadJSON('font-scale', 1));
+  applyWidgetVisibility();
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     applyTheme(next);
@@ -316,6 +401,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initWidgetDrag();
   });
   applyLayoutLock();
+
+  /* Odaklanma modu — sol/sağ sütunları gizle */
+  const focusBtn = document.getElementById('focus-mode-btn');
+  if (focusBtn) focusBtn.innerHTML = getIcon('eye', 15);
+  focusBtn?.addEventListener('click', () => {
+    const on = document.body.classList.toggle('focus-mode');
+    focusBtn.innerHTML = getIcon(on ? 'eye_off' : 'eye', 15);
+    focusBtn.title = on ? 'Odak modundan çık' : 'Odaklan (sütunları gizle)';
+    focusBtn.classList.toggle('active', on);
+  });
 
   /* Widget yerleşimini yükle */
   loadWidgetLayout();
@@ -338,6 +433,16 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('todo-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openTodoModule(); });
   document.getElementById('widget-todo')?.addEventListener('click', openTodoModule);
 
+  /* Notlar widget */
+  renderNotesWidget();
+  document.getElementById('notes-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openNotesModule(); });
+  document.getElementById('widget-notes')?.addEventListener('click', openNotesModule);
+
+  /* Alışkanlıklar widget */
+  renderHabitsWidget();
+  document.getElementById('habits-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openHabitsModule(); });
+  document.getElementById('widget-habits')?.addEventListener('click', openHabitsModule);
+
   /* Projeler widget */
   renderProjectsWidget();
   document.getElementById('projects-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openProjectsModule(); });
@@ -347,6 +452,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCalendarWidget();
   document.getElementById('calendar-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openCalendarModule(); });
   document.getElementById('widget-calendar')?.addEventListener('click', openCalendarModule);
+
+  /* Odak Sesi widget */
+  renderFocusWidget();
+  document.getElementById('focus-expand-btn')?.addEventListener('click', (e) => { e.stopPropagation(); openFocusModule(); });
+  document.getElementById('widget-focus')?.addEventListener('click', openFocusModule);
 
   /* Pomodoro widget */
   renderPomoWidget();

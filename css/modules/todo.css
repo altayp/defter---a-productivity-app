@@ -38,7 +38,7 @@
 .todo-widget-item.done { text-decoration: line-through; opacity: 0.5; }
 
 .todo-widget-flag {
-  color: #e05a4e;
+  color: var(--accent);
   flex-shrink: 0;
   display: flex;
 }

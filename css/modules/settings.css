@@ -277,3 +277,112 @@
 .settings-btn:hover { border-color: var(--accent); color: var(--accent); }
 .settings-btn.danger { border-color: #c0392b; color: #c0392b; }
 .settings-btn.danger:hover { background: rgba(192,57,43,0.08); }
+
+/* ── Veri sekmesi ── */
+.settings-data-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.settings-data-stat {
+  text-align: center;
+  padding: 10px 6px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.settings-data-stat span {
+  display: block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.settings-data-size {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ── Yazı boyutu seçici ── */
+.settings-fontsize {
+  display: flex;
+  gap: 5px;
+}
+.settings-fontsize-btn {
+  width: 34px;
+  height: 30px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  background: var(--bg-input);
+  color: var(--ink-light);
+  cursor: pointer;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+  transition: all 0.12s;
+}
+.settings-fontsize-btn:nth-child(1) { font-size: 11px; }
+.settings-fontsize-btn:nth-child(2) { font-size: 13px; }
+.settings-fontsize-btn:nth-child(3) { font-size: 15px; }
+.settings-fontsize-btn:nth-child(4) { font-size: 17px; }
+.settings-fontsize-btn:hover { border-color: var(--accent); color: var(--accent); }
+.settings-fontsize-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+
+/* ── Modüller sekmesi: şifre input ── */
+.settings-input {
+  padding: 7px 11px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  background: var(--bg-input);
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  outline: none;
+}
+.settings-input:focus { border-color: var(--accent); }
+
+/* ── Geri bildirim sekmesi ── */
+.settings-feedback-intro {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink-light);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.settings-feedback-field {
+  margin-bottom: 14px;
+}
+.settings-form-label {
+  display: block;
+  font-family: 'Crimson Pro', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-bottom: 5px;
+}
+.settings-feedback-send {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+}
+.settings-feedback-note {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--ink-faint);
+  text-align: center;
+  margin-top: 10px;
+}

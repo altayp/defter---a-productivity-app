@@ -42,7 +42,7 @@
   gap: 5px;
   font-family: 'Crimson Pro', serif;
   font-size: 12px;
-  color: var(--ink-light);
+  color: var(--accent);
   font-style: italic;
   margin-bottom: 8px;
 }
@@ -181,7 +181,7 @@
   align-items: center;
   gap: 3px;
   font-size: 11px;
-  color: var(--ink-light);
+  color: var(--accent);
 }
 .proj-folder-deadline.urgent { color: #e05a4e; }
 
@@ -252,7 +252,7 @@
   font-family: 'Crimson Pro', serif;
   font-size: 13px;
   font-style: italic;
-  color: var(--ink-light);
+  color: var(--accent);
 }
 
 .proj-board-action {

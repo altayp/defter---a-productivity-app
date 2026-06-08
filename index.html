@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="css/modules/projects.css"/>
   <link rel="stylesheet" href="css/modules/calendar.css"/>
   <link rel="stylesheet" href="css/modules/today.css"/>
+  <link rel="stylesheet" href="css/modules/notes.css"/>
+  <link rel="stylesheet" href="css/modules/focus.css"/>
+  <link rel="stylesheet" href="css/modules/habits.css"/>
 </head>
 <body>
 
@@ -23,7 +26,7 @@
   <!-- Üst Bar -->
   <header id="titlebar">
     <div id="titlebar-left">
-      <span id="app-logo" data-icon="logo" data-icon-size="18"></span>
+      <span id="app-logo">&#x2711;</span>
       <span id="app-name">Defter</span>
     </div>
 
@@ -33,6 +36,9 @@
       <button class="color-dot" data-color="red"    title="Kırmızı"></button>
       <button class="color-dot" data-color="purple" title="Mor"></button>
       <button class="color-dot" data-color="gold"   title="Altın"></button>
+      <button class="color-dot color-dot-custom" data-color="custom" title="Özel Renk" id="color-dot-custom"></button>
+      <span class="titlebar-center-sep"></span>
+      <button class="focus-eye" id="focus-mode-btn" title="Odaklan (sütunları gizle)"></button>
     </div>
 
     <div id="titlebar-right">
@@ -72,6 +78,26 @@
         <div class="widget-body" id="todo-widget-body"></div>
       </div>
 
+      <div class="widget" id="widget-notes" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="note" data-icon-size="15"></span>
+          <span class="widget-title">Notlar</span>
+          <button class="widget-expand" id="notes-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="notes-widget-body"></div>
+      </div>
+
+      <div class="widget" id="widget-habits" data-col="left">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="habit" data-icon-size="15"></span>
+          <span class="widget-title">Alışkanlıklar</span>
+          <button class="widget-expand" id="habits-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="habits-widget-body"></div>
+      </div>
+
       <div class="widget" id="widget-pomodoro" data-col="left">
         <div class="widget-header">
           <span class="widget-drag-handle" title="Taşı"></span>
@@ -82,7 +108,7 @@
         <div class="widget-body" id="pomo-widget-body"></div>
       </div>
 
-      <div class="widget" id="widget-test" data-col="left">
+      <div class="widget" id="widget-test" data-col="left" data-dev="true">
         <div class="widget-header">
           <span class="widget-drag-handle" title="Taşı"></span>
           <span class="widget-icon" data-icon="settings" data-icon-size="15"></span>
@@ -120,6 +146,16 @@
         <div class="widget-body" id="projects-widget-body"></div>
       </div>
 
+      <div class="widget" id="widget-focus" data-col="right">
+        <div class="widget-header">
+          <span class="widget-drag-handle" title="Taşı"></span>
+          <span class="widget-icon" data-icon="music" data-icon-size="15"></span>
+          <span class="widget-title">Odak Sesi</span>
+          <button class="widget-expand" id="focus-expand-btn" data-icon="expand" data-icon-size="13"></button>
+        </div>
+        <div class="widget-body" id="focus-widget-body"></div>
+      </div>
+
     </aside>
 
   </div>
@@ -134,6 +170,9 @@
 <script src="js/modules/projects.js"></script>
 <script src="js/modules/calendar.js"></script>
 <script src="js/modules/today.js"></script>
+<script src="js/modules/notes.js"></script>
+<script src="js/modules/focus.js"></script>
+<script src="js/modules/habits.js"></script>
 <script src="js/modules/settings.js"></script>
 <script src="js/modules/test.js"></script>
 <script src="js/dashboard.js"></script>

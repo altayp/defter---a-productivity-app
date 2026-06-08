@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 
 let mainWindow;
@@ -38,4 +38,10 @@ ipcMain.on('window-control', (event, action) => {
   if (action === 'minimize') mainWindow.minimize();
   if (action === 'maximize') mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
   if (action === 'close')    mainWindow.close();
+});
+
+ipcMain.on('open-external', (event, url) => {
+  if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:'))) {
+    shell.openExternal(url);
+  }
 });

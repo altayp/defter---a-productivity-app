@@ -41,6 +41,14 @@
   -webkit-app-region: no-drag;
 }
 
+#app-logo {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+}
+
 #app-name {
   font-family: 'Caveat', cursive;
   font-size: 20px;
@@ -71,6 +79,32 @@
 }
 .color-dot:hover { transform: scale(1.25); }
 .color-dot.active { border-color: var(--ink); transform: scale(1.15); }
+
+/* Renk noktaları ile göz ikonu arasındaki ayraç */
+.titlebar-center-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
+
+/* Odaklanma göz ikonu — sade, buton kutusu yok */
+.focus-eye {
+  -webkit-app-region: no-drag;
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+.focus-eye:hover { color: var(--ink); transform: scale(1.12); }
+.focus-eye.active { color: var(--accent); }
 .color-dot[data-color="green"]  { background: #5a9e6f; }
 .color-dot[data-color="blue"]   { background: #4a90c4; }
 .color-dot[data-color="red"]    { background: #c45a5a; }
@@ -267,3 +301,31 @@ body.layout-unlocked .widget-drag-handle { display: flex; }
   flex-shrink: 0;
   transition: height 0.1s;
 }
+
+/* ── Odaklanma modu — yan sütunları animasyonlu gizle ── */
+#col-left, #col-right {
+  transition: width 0.32s cubic-bezier(.4,0,.2,1),
+              opacity 0.22s ease,
+              padding 0.32s cubic-bezier(.4,0,.2,1),
+              border-width 0.32s ease;
+  overflow: hidden;
+}
+body.focus-mode #col-left,
+body.focus-mode #col-right {
+  width: 0 !important;
+  min-width: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  opacity: 0;
+  border-width: 0 !important;
+  pointer-events: none;
+}
+#col-center {
+  transition: all 0.32s cubic-bezier(.4,0,.2,1);
+}
+
+/* Özel renk noktası */
+.color-dot-custom {
+  border: 2px solid var(--border-strong) !important;
+}
+.color-dot-custom.active { border-color: var(--ink) !important; }

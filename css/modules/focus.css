@@ -1,0 +1,391 @@
+/* ═══════════════════════════════════════
+   focus.css — Odak Sesi Modülü
+   ═══════════════════════════════════════ */
+
+/* ── Widget ── */
+#widget-focus { cursor: pointer; }
+
+.focus-widget-master {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+.focus-widget-vol-icon { color: var(--accent); display: flex; flex-shrink: 0; }
+.focus-widget-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+.focus-widget-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg-card);
+}
+.focus-widget-vol-val {
+  font-family: 'Crimson Pro', serif;
+  font-size: 11px;
+  color: var(--ink-faint);
+  min-width: 30px;
+  text-align: right;
+}
+
+.focus-widget-pins {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+.focus-widget-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 4px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  background: var(--bg-input);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.12s;
+  font-family: 'Crimson Pro', serif;
+  font-size: 10px;
+}
+.focus-widget-pin span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.focus-widget-pin:hover { border-color: var(--accent); }
+.focus-widget-pin.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent);
+}
+.focus-widget-empty {
+  font-family: 'Crimson Pro', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* ══════════════════════════════════════
+   ORTA PANEL
+   ══════════════════════════════════════ */
+#module-focus {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: moduleIn 0.22s ease both;
+}
+
+.focus-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 12px;
+  border-bottom: 1.5px dashed var(--border);
+  flex-shrink: 0;
+}
+.focus-topbar-title {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  flex: 1;
+}
+
+.focus-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px;
+}
+
+/* Master volume */
+.focus-master {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: 2px 3px 0 var(--shadow);
+}
+.focus-master-icon { color: var(--accent); display: flex; flex-shrink: 0; }
+.focus-master-label {
+  font-family: 'Caveat', cursive;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.focus-master-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+.focus-master-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg-card);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.focus-master-val {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink-faint);
+  min-width: 38px;
+  text-align: right;
+}
+
+.focus-section-title {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Ses ızgarası */
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.focus-sound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: var(--bg-card);
+  border: 1.8px solid var(--border);
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.focus-sound:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.focus-sound.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+.focus-sound-icon {
+  color: var(--ink-light);
+  transition: color 0.15s;
+}
+.focus-sound.active .focus-sound-icon { color: var(--accent); }
+.focus-sound-name {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* Aktif ses çalma göstergesi */
+.focus-sound.active::after {
+  content: '';
+  position: absolute;
+  top: 9px; left: 9px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: focusPulse 1.4s ease-in-out infinite;
+}
+@keyframes focusPulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%     { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* Kanal volume slider (aktifken) */
+.focus-sound-vol {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+  margin-top: 2px;
+  display: none;
+}
+.focus-sound.active .focus-sound-vol { display: block; }
+.focus-sound-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* Özel ses kartı (silme butonlu) */
+.focus-sound-del {
+  position: absolute;
+  top: 6px; right: 30px;
+  width: 20px; height: 20px;
+  border: none;
+  background: var(--bg-hover);
+  color: var(--ink-faint);
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+.focus-sound:hover .focus-sound-del { display: flex; }
+.focus-sound-del:hover { color: #e05a4e; }
+
+/* Pin butonu (sağ üst) */
+.focus-sound-pin {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 20px; height: 20px;
+  border: none;
+  background: var(--bg-hover);
+  color: var(--ink-faint);
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.12s;
+}
+.focus-sound:hover .focus-sound-pin { display: flex; }
+.focus-sound-pin.pinned {
+  display: flex;
+  color: var(--accent);
+}
+.focus-sound-pin:hover { color: var(--accent); }
+
+/* Ses ekleme kartı */
+.focus-add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  border: 1.8px dashed var(--border);
+  border-radius: var(--radius-card);
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+}
+.focus-add:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* ── Ses ekleme formu ── */
+.focus-upload-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.focus-upload-overlay.show { opacity: 1; }
+.focus-upload-panel {
+  width: 400px;
+  max-width: 92vw;
+  background: var(--bg-card);
+  border: 1.8px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: 4px 8px 0 var(--shadow), 8px 16px 0 rgba(0,0,0,0.06);
+  padding: 20px 22px;
+  transform: scale(0.95);
+  transition: transform 0.18s cubic-bezier(.34,1.4,.64,1);
+}
+.focus-upload-overlay.show .focus-upload-panel { transform: scale(1); }
+.focus-upload-title {
+  font-family: 'Caveat', cursive;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.focus-upload-drop {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-soft);
+  padding: 26px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--ink-faint);
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  font-style: italic;
+}
+.focus-upload-drop:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-subtle); }
+.focus-upload-filename {
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink);
+  margin: 10px 0;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ── Ses ekleme formu ikon seçici ── */
+.focus-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+  margin-bottom: 6px;
+}
+.focus-icon-opt {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-soft);
+  background: var(--bg-input);
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.focus-icon-opt:hover { border-color: var(--accent); color: var(--accent); }
+.focus-icon-opt.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+  color: var(--accent);
+}

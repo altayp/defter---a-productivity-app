@@ -45,11 +45,12 @@ function showToast(message, type = 'default', duration = 4000) {
 
   const now = new Date().toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
   const labels = { default:'Bildirim', success:'Başarılı', error:'Hata' };
+  const icons  = { default:'bell', success:'notif_success', error:'notif_error' };
 
   const toast = document.createElement('div');
   toast.className = `toast${type !== 'default' ? ' ' + type : ''}`;
   toast.innerHTML = `
-    <span class="toast-icon">${getIcon('bell', 20)}</span>
+    <span class="toast-icon">${getIcon(icons[type] || 'bell', 20)}</span>
     <div class="toast-body">
       <div class="toast-label">${labels[type] || 'Bildirim'}</div>
       <div class="toast-message">${escapeHtml(message)}</div>

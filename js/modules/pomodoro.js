@@ -18,6 +18,7 @@ const POMO_DEFAULTS = {
   alarmSound:       'bell',
   alarmVolume:      0.6,
   autoStart:        false,
+  emojiRain:        true,
 };
 
 /* ── Durum ──
@@ -165,6 +166,7 @@ const BREAK_EMOJIS = ['☕', '🍵', '🧃', '🌿', '🎵', '💤', '🌸', '�
 const FOCUS_EMOJIS = ['🧠', '📝', '✏️', '📖', '💡', '🎯', '⚡', '🔥', '💎', '🌟'];
 
 function launchEmojiRain(finishedPhase) {
+  if (pomoSettings().emojiRain === false) return;
   const emojis = finishedPhase === 'focus' ? BREAK_EMOJIS : FOCUS_EMOJIS;
   const wrap   = document.createElement('div');
   wrap.className = 'emoji-rain-container';

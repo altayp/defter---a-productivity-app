@@ -149,7 +149,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); }
 
 .toast-icon {
   flex-shrink: 0;
-  color: var(--ink-faint);
+  color: var(--accent);
   display: flex;
 }
 .toast.success .toast-icon { color: #5a9e64; }
@@ -161,7 +161,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); }
   font-family: 'Caveat', cursive;
   font-size: 12px;
   font-weight: 700;
-  color: var(--ink-faint);
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 1px;
@@ -215,7 +215,7 @@ input:focus, textarea:focus, select:focus { border-color: var(--accent); }
 .toast-progress-bar {
   height: 100%;
   width: 100%;
-  background: var(--ink-faint);
+  background: var(--accent);
   transform-origin: left;
   animation: toastProgress linear forwards;
 }

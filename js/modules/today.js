@@ -52,27 +52,43 @@ function renderTodayWidget() {
   const logs = getNotificationLogs();
   const dateStr = new Date().toLocaleDateString('tr-TR', { day:'numeric', month:'long', weekday:'long' });
 
-  const items = [
-    ...pending.map(t => ({ type: 'todo', label: t.text })),
-    ...projects.map(p => ({ type: 'project', label: p.name })),
-  ];
-
   const lastLog = logs[0];
+  const nothing = pending.length === 0 && projects.length === 0;
 
   body.innerHTML = `
     <div class="today-widget-head">
       <span class="today-widget-date">${dateStr}</span>
     </div>
-    ${items.length
-      ? `<div class="today-widget-list">
-          ${items.slice(0, 5).map(it => `
+
+    ${nothing ? `<div class="today-widget-empty">Bugün için bir şey yok.</div>` : ''}
+
+    ${pending.length ? `
+      <div class="today-widget-group">
+        <div class="today-widget-group-title">${getIcon('check', 11)} Görevler</div>
+        <div class="today-widget-list">
+          ${pending.slice(0, 4).map(t => `
             <div class="today-widget-item">
-              <span class="today-widget-dot ${it.type}"></span>
-              <span class="today-widget-item-label">${escapeHtml(it.label)}</span>
+              <span class="today-widget-dot todo"></span>
+              <span class="today-widget-item-label">${escapeHtml(t.text)}</span>
             </div>`).join('')}
+          ${pending.length > 4 ? `<div class="today-widget-more">+${pending.length - 4} daha</div>` : ''}
         </div>
-        ${items.length > 5 ? `<div class="today-widget-empty">+${items.length - 5} daha</div>` : ''}`
-      : `<div class="today-widget-empty">Bugün için bir şey yok.</div>`}
+      </div>
+    ` : ''}
+
+    ${projects.length ? `
+      <div class="today-widget-group">
+        <div class="today-widget-group-title">${getIcon('folder', 11)} Projeler</div>
+        <div class="today-widget-list">
+          ${projects.slice(0, 4).map(p => `
+            <div class="today-widget-item">
+              <span class="today-widget-dot project"></span>
+              <span class="today-widget-item-label">${escapeHtml(p.name)}</span>
+            </div>`).join('')}
+          ${projects.length > 4 ? `<div class="today-widget-more">+${projects.length - 4} daha</div>` : ''}
+        </div>
+      </div>
+    ` : ''}
 
     ${lastLog ? `
       <div class="today-widget-lastnotif" id="today-last-notif" title="Bildirim geçmişini gör">
